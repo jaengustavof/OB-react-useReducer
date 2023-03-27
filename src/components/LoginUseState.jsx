@@ -1,42 +1,48 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-const Loginusestate = () => {
+const LoginUseState = () => {
 
-    const [username, setUsername] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setisLoggedIn] = useState(false);
 
     const submit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
+
         try {
-            await function login({username, password}) {
+            await function login(userName, password) {
+ 
                 new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        if(username === 'admin' && password === 'admin') {
+                        if(userName === 'admin' & password === 'admin') {
                             resolve();
                         }else {
-                            reject()
+                            reject();
                         }
-                    }, 2000);
+                    },2000)
                 })
             }
-            setIsLoggedIn(true);
+
+            setisLoggedIn(true);
             setLoading(false);
+
         } catch (error) {
+
             setError(`Invalid Username or Password: ${error}`);
             setLoading(false);
-            setUsername('');
+            setUserName('');
             setPassword('');
+
         }
     }
 
-    const logout = () => {
-        setIsLoggedIn(false);
-        setLoading(false)
+    const logOut = () => {
+        setisLoggedIn(false);
+        setLoading(false);
     }
 
     return (
@@ -45,44 +51,41 @@ const Loginusestate = () => {
                 {
                     isLoggedIn ? (
                         <div>
-                            <h1>
-                                Welcome, {username}!
-                            </h1>
-                            <button onClick={logout}>
-                                Logout
-                            </button>
+                            <h1>Welcome {userName}</h1>
+                            <button onClick={logOut}>Log Out</button>
                         </div>
                     ) :
                     (
                         <form onSubmit={submit}>
+
                             {
                                 error && <p style={{color: 'tomato'}}>{error}</p>
                             }
+
                             <input 
-                                type='text'
-                                placeholder='Username'
-                                value = {username}
-                                onChange = {(e) => setUsername(e.currentTarget.value)}
+                                type='text' 
+                                placeholder='Username' 
+                                value={userName} 
+                                onChange = {(e) => setUserName(e.currentTarget.value)} 
                             />
+
                             <input 
-                                type='text'
-                                placeholder='password'
-                                value = {password}
-                                onChange = {(e) => setPassword(e.currentTarget.value)}
+                                type='text' 
+                                placeholder='password' 
+                                value={password} 
+                                onChange = {(e) => setPassword(e.currentTarget.value)} 
                             />
+
                             <button type='submit'>
-                                {isLoading ? 'Logging...' : 'Login'}
+                                {isLoading ? 'Loading...': 'Login'}
                             </button>
 
                         </form>
                     )
                 }
-
             </div>
-
-            
         </div>
     );
 }
 
-export default Loginusestate;
+export default LoginUseState;

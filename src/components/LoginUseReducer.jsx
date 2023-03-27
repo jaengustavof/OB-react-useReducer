@@ -1,11 +1,10 @@
-import React, { useReducer } from 'react';
-
+import React, { useReducer } from "react";
 
 // Actions
 const FIELD = 'FIELD';
 const LOGIN = 'LOGIN';
-const SUCCESS = ' SUCCESS';
 const ERROR = 'ERROR';
+const SUCCESS = 'SUCCESS';
 const LOGOUT = 'LOGOUT';
 
 // INITIAL STATE
@@ -17,74 +16,79 @@ const initialState = {
     isLoggedIn: false
 }
 
-
 // Reducer
 const loginReducer = (state, action) => {
     switch (action.type) {
         case FIELD:
             return {
                 ...state,
-                [action.fieldName]: action.payload
+                [action.fieldName] : action.payload //
             }
+
         case LOGIN:
             return {
                 ...state,
                 error: '',
                 isLoading: true
             }
+
         case SUCCESS:
             return {
                 ...state,
                 error: '',
                 isLoading: false,
                 isLoggedIn: true
-            }
+            }   
+
         case ERROR:
             return {
                 ...state,
-                error: 'Invalid Username or Password',
-                isLoading: false,
-                isLoggedIn: false,
-                username:'',
-                password:''
-            }
-        case LOGOUT:
-            return {
-                ...state,
                 isLoggedIn: false
+            }  
+
+        case LOGOUT:
+            return{
+
             }
+
         default:
-            break;
+            return state;
     }
 }
 
-const Loginusereducer = () => {
+const LoginUseReducer = () => {
 
     const [state, dispatch] = useReducer(loginReducer, initialState);
 
-    // Obtain all variables from state
-    const { username, password, error, isLoading, isLoggedIn } = state;
+    // Obtain all variable from state
+    const {username, password, error, isLoading, isLoggedIn } = state;
 
     // Submit
     const submit = async (e) => {
         e.preventDefault();
+
         // Dispatch Action:
-        dispatch({type:LOGIN});
+        dispatch({type: LOGIN});
+
         try {
-            await function login({username, password}) {
+            await function login(userName, password) {
+ 
                 new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        if(username === 'admin' && password === 'admin') {
+                        if(userName === 'admin' & password === 'admin') {
                             resolve();
                         }else {
-                            reject()
+                            reject();
                         }
-                    }, 2000);
+                    },2000)
                 })
             }
-            dispatch({type: SUCCESS})
+
+            dispatch({type: SUCCESS});
+
         } catch (error) {
-           dispatch({type:ERROR})
+
+            dispatch({type: ERROR});
         }
     }
 
@@ -98,45 +102,43 @@ const Loginusereducer = () => {
                 {
                     isLoggedIn ? (
                         <div>
-                            <h1>
-                                Welcome, {username}!
-                            </h1>
-                            <button onClick={logout}>
-                                Logout
-                            </button>
+                            <h1>Welcome {username}</h1>
+                            <button onClick={logout}>Log Out</button>
                         </div>
                     ) :
                     (
                         <form onSubmit={submit}>
+
                             {
                                 error && <p style={{color: 'tomato'}}>{error}</p>
                             }
+
                             <input 
-                                type='text'
-                                placeholder='Username'
-                                value = {username}
+                                type='text' 
+                                placeholder='Username' 
+                                value={username} 
                                 onChange = {(e) => 
-                                    dispatch({
-                                        type: FIELD, 
-                                        fieldName:'username', 
-                                        payload: e.currentTarget.value
-                                        })
-                                }
+                                dispatch({
+                                    type: FIELD, 
+                                    fieldName: 'username', 
+                                    payload: e.currentTarget.value
+                                    })} 
                             />
+
                             <input 
-                                type='text'
-                                placeholder='password'
-                                value = {password}
+                                type='text' 
+                                placeholder='password' 
+                                value={password} 
                                 onChange = {(e) => 
-                                    dispatch({
-                                        type: FIELD, 
-                                        fieldName:'password', 
-                                        payload: e.currentTarget.value
-                                        })
-                                }
+                                dispatch({
+                                    type: FIELD, 
+                                    fieldName: 'password', 
+                                    payload: e.currentTarget.value
+                                    })} 
                             />
+
                             <button type='submit'>
-                                {isLoading ? 'Logging...' : 'Login'}
+                                {isLoading ? 'Loading...': 'Login'}
                             </button>
 
                         </form>
@@ -147,4 +149,4 @@ const Loginusereducer = () => {
     );
 }
 
-export default Loginusereducer;
+export default LoginUseReducer;
